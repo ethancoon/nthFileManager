@@ -1,36 +1,46 @@
 #include <iostream>
 #include <filesystem>
+#include <string>
 
-void traverseDirectory(const std::filesystem::path& directoryPath)
+namespace fs = std::filesystem;
+
+void traverseDirectories(const fs::path& directoryPath)
 {
-    for (const auto& entry : std::filesystem::directory_iterator(directoryPath))
+    std::cout << "Listing directory: " << directoryPath << std::endl;
+
+    for (const auto& entry : fs::directory_iterator(directoryPath))
     {
-        try
-        {
-            if (std::filesystem::is_symlink(entry.path()))
-            {
-                // Skip symbolic links
-                continue;
-            }
-            else if (std::filesystem::is_regular_file(entry.path()))
-            {
-                std::cout << entry.path() << std::endl;
-            }
-            else if (std::filesystem::is_directory(entry.path()))
-            {
-                traverseDirectory(entry.path());
-            }
-        }
-        catch (const std::filesystem::filesystem_error& e)
-        {
-            std::cerr << "filesystem error: " << e.what() << std::endl;
-        }
+        std::cout << entry.path().string() << std::endl;
     }
 }
 
-int main() {
-    std::filesystem::path rootPath = "/"; // Start from the root directory
-    traverseDirectory(rootPath);
+int main()
+{
+    std::string inputPath;
+
+    while (true)
+    {
+        std::cout << "Enter directory path (or 'exit' to quit): ";
+        std::getline(std::cin, inputPath);
+
+        if (inputPath == "exit")
+        {
+            break;
+        }
+
+        fs::path directoryPath(inputPath);
+
+        if (fs::exists(directoryPath) && fs::is_directory(directoryPath))
+        {
+            traverseDirectories(directoryPath);
+        }
+        else
+        {
+            std::cout << "Invalid directory path." << std::endl;
+        }
+
+        std::cout << std::endl;
+    }
 
     return 0;
 }
