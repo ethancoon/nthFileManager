@@ -1,6 +1,7 @@
 #include <iostream>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 namespace fs = std::filesystem;
 
@@ -10,33 +11,47 @@ void traverseDirectories(const fs::path& directoryPath)
 
     for (const auto& entry : fs::directory_iterator(directoryPath))
     {
-        std::cout << entry.path().string() << std::endl;
+        std::cout << entry.path().filename() << std::endl;
     }
 }
 
 int main()
 {
-    std::string inputPath;
+    std::vector<std::string> pathStack;
 
     while (true)
     {
-        std::cout << "Enter directory path (or 'exit' to quit): ";
+        std::string inputPath;
+
+        if (!pathStack.empty())
+        {
+            std::cout << "Current directory: " << fs::path(pathStack.back()) << std::endl;
+        }
+
+        std::cout << "Enter next directory name (or 'back' to go up, 'exit' to quit): ";
         std::getline(std::cin, inputPath);
 
         if (inputPath == "exit")
         {
             break;
         }
-
-        fs::path directoryPath(inputPath);
-
-        if (fs::exists(directoryPath) && fs::is_directory(directoryPath))
+        else if (inputPath == "back" && !pathStack.empty())
         {
-            traverseDirectories(directoryPath);
+            pathStack.pop_back();
+            continue;
+        }
+
+        fs::path currentPath = (!pathStack.empty()) ? fs::path(pathStack.back()) : fs::path("/");
+        currentPath /= inputPath;
+
+        if (fs::exists(currentPath) && fs::is_directory(currentPath))
+        {
+            traverseDirectories(currentPath);
+            pathStack.push_back(currentPath.string());
         }
         else
         {
-            std::cout << "Invalid directory path." << std::endl;
+            std::cout << "Invalid directory name." << std::endl;
         }
 
         std::cout << std::endl;
