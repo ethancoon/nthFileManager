@@ -1,32 +1,36 @@
-#include <filesystem>
-#include <fstream>
 #include <iostream>
+#include <filesystem>
 
-using namespace std;
-using namespace std::filesystem;
+void traverseDirectory(const std::filesystem::path& directoryPath)
+{
+    for (const auto& entry : std::filesystem::directory_iterator(directoryPath))
+    {
+        try
+        {
+            if (std::filesystem::is_symlink(entry.path()))
+            {
+                // Skip symbolic links
+                continue;
+            }
+            else if (std::filesystem::is_regular_file(entry.path()))
+            {
+                std::cout << entry.path() << std::endl;
+            }
+            else if (std::filesystem::is_directory(entry.path()))
+            {
+                traverseDirectory(entry.path());
+            }
+        }
+        catch (const std::filesystem::filesystem_error& e)
+        {
+            std::cerr << "filesystem error: " << e.what() << std::endl;
+        }
+    }
+}
 
 int main() {
-    std::filesystem::path directoryPath = "test";
-
-    if (!exists(directoryPath)) {
-        create_directory(directoryPath);
-        cout << "Directory created: " << directoryPath
-             << endl;
-    }
-
-    path filepath = directoryPath / "my_file.txt";
-
-    ofstream file(filepath);
-    if (file.is_open()) {
-        file << "Hello, FileSystem!";
-        file.close();
-        cout << "File created: " << filepath << endl;
-    }
-    else {
-        cerr << "Failed to create file: " << filepath
-             << endl;
-    }
+    std::filesystem::path rootPath = "/"; // Start from the root directory
+    traverseDirectory(rootPath);
 
     return 0;
 }
-
