@@ -1,7 +1,3 @@
-//
-// Created by ethan on 4/24/24.
-//
-
 #include "../include/FileManager.h"
 #include <iostream>
 #include <filesystem>
@@ -53,8 +49,15 @@ FileManager::FileManager() {
 void FileManager::listFiles(const std::filesystem::path& directoryPath) {
     std::cout << "Listing directory: " << directoryPath << std::endl;
 
-    for (const auto& entry : std::filesystem::directory_iterator(directoryPath))
-    {
-        std::cout << entry.path().filename() << std::endl;
+    for (const auto& entry : std::filesystem::directory_iterator(directoryPath)) {
+        std::string filename = entry.path().filename().string();
+        std::string extension = entry.path().extension().string();
+        if (entry.is_directory()) {
+            std::cout << "\x1B[34m" << filename << "/" << "\x1B[0m" << std::endl;
+        } else if (extension == ".pdf" || extension == ".txt" || extension == ".docx" || extension == ".doc" || extension == ".pptx" || extension == ".ppt" || extension == ".xlsx" || extension == ".xls" || extension == ".csv" || extension == ".xml" || extension == ".json") {
+            std::cout << "\x1B[32m" << filename << "\x1B[0m" << std::endl;
+        } else if (entry.is_regular_file()) {
+            std::cout << filename << std::endl;
+        }
     }
 }

@@ -1,7 +1,3 @@
-//
-// Created by ethan on 4/24/24.
-//
-
 #ifndef NTHFILEMANAGER_FILEMANAGER_H
 #define NTHFILEMANAGER_FILEMANAGER_H
 
@@ -11,7 +7,7 @@ class FileManager {
 public:
     FileManager();
 
-    void listFiles(const std::filesystem::path& directoryPath);
+    static void listFiles(const std::filesystem::path& directoryPath);
 };
 
 
