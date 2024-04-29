@@ -7,9 +7,20 @@
 FileManager::FileManager() {
     std::vector<std::string> pathStack;
 
+    std::string inputPath = "/";
+
+    if (std::filesystem::exists(inputPath) && std::filesystem::is_directory(inputPath))
+    {
+        listFiles(inputPath);
+        pathStack.push_back(inputPath);
+    }
+    else
+    {
+        std::cout << "Invalid directory name." << std::endl;
+    }
+
     while (true)
     {
-        std::string inputPath;
 
         if (!pathStack.empty())
         {
