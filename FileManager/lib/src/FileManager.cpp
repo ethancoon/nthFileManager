@@ -3,11 +3,12 @@
 #include <filesystem>
 #include <vector>
 #include <string>
+#include <fstream>
 
 FileManager::FileManager() {
     std::vector<std::string> pathStack;
 
-    std::string inputPath = "/";
+    std::string inputPath = "/home/ethan/repos/nthFileManager";
 
     if (std::filesystem::exists(inputPath) && std::filesystem::is_directory(inputPath))
     {
@@ -30,6 +31,8 @@ FileManager::FileManager() {
         std::cout << "Enter next directory name (or 'back' to go up, 'exit' to quit): ";
         std::getline(std::cin, inputPath);
 
+        std::filesystem::path currentPath = (!pathStack.empty()) ? std::filesystem::path(pathStack.back()) : std::filesystem::path("/");
+
         if (inputPath == "exit")
         {
             break;
@@ -39,9 +42,23 @@ FileManager::FileManager() {
             listFiles(std::filesystem::path(pathStack.back()));
             pathStack.pop_back();
             continue;
+        } else if (inputPath == "create") {
+            if (pathStack.empty()) {
+                std::cout << "Cannot create file in root directory." << std::endl;
+                continue;
+            } else if (std::filesystem::exists(pathStack.back()) && std::filesystem::is_directory(pathStack.back())) {
+                std::string filename;
+                std::cout << "Enter filename: ";
+                std::getline(std::cin, filename);
+                createFile(std::filesystem::path(pathStack.back()) / filename);
+                listFiles(currentPath);
+                continue;
+            } else {
+                std::cout << "Invalid directory name." << std::endl;
+                continue;
+            }
         }
 
-        std::filesystem::path currentPath = (!pathStack.empty()) ? std::filesystem::path(pathStack.back()) : std::filesystem::path("/");
         currentPath /= inputPath;
 
         if (std::filesystem::exists(currentPath) && std::filesystem::is_directory(currentPath))
@@ -72,4 +89,9 @@ void FileManager::listFiles(const std::filesystem::path& directoryPath) {
             std::cout << filename << std::endl;
         }
     }
+}
+
+void FileManager::createFile(const std::filesystem::path &filePath) {
+    std::ofstream file(filePath);
+    file.close();
 }
