@@ -36,6 +36,7 @@ FileManager::FileManager() {
         }
         else if (inputPath == "back" && !pathStack.empty())
         {
+            listFiles(std::filesystem::path(pathStack.back()));
             pathStack.pop_back();
             continue;
         }
