@@ -7,7 +7,7 @@
 
 FileManager::FileManager() {
     std::vector<std::string> pathStack;
-    std::vector<std::string> commands = {"back - go up one directory", "exit - quit the program", "create - create a new file in the current directory", "commands - list all commands"};
+    std::vector<std::string> commands = {"back - go up one directory", "exit - quit the program", "create - create a new file in the current directory", "commands - list all commands", "del/delete - delete a file in the current directory"};
 
     std::string inputPath = "/home/ethan/repos/nthFileManager";
 
@@ -62,6 +62,13 @@ FileManager::FileManager() {
             for (const auto& command : commands) {
                 std::cout << command << std::endl;
             }
+            continue;
+        } else if (inputPath == "del" || inputPath == "delete") {
+            std::string filename;
+            std::cout << "Enter filename: ";
+            std::getline(std::cin, filename);
+            std::filesystem::remove(std::filesystem::path(pathStack.back()) / filename);
+            listFiles(currentPath);
             continue;
         }
 
