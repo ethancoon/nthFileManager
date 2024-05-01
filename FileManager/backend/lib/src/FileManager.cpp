@@ -9,7 +9,7 @@ FileManager::FileManager() {
     std::vector<std::string> pathStack;
     std::vector<std::string> commands = {"back - go up one directory", "exit - quit the program", "create - create a new file in the current directory", "commands - list all commands", "del/delete - delete a file in the current directory"};
 
-    std::string inputPath = "/home/ethan/repos/nthFileManager";
+    std::string inputPath = "/";
 
     if (std::filesystem::exists(inputPath) && std::filesystem::is_directory(inputPath))
     {
