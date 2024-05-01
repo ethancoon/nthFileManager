@@ -1,0 +1,14 @@
+{
+  "name": "nthfilemanager",
+  "version": "0.1.0",
+  "description": "File Manager",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Ethan Coon",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^30.0.1"
+  }
+}
