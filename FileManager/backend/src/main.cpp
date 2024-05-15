@@ -1,8 +1,4 @@
-#include "../lib/include/FileManager.h"
-
-int main()
-{
-    FileManager nthFileManager = FileManager();
+int main(){
 
     return 0;
 }
