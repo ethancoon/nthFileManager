@@ -1,17 +1,14 @@
 const { app, BrowserWindow } = require('electron/main')
 const path = require('node:path')
+const addon = require('./build/Release/addon');
+
+console.log(addon.hello()); // 'world'
+// const folderPath = path.join(__dirname, 'files');
+// const files = addon.fetchFilesystemData(folderPath);
+// console.log(files);
+
 
 const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
-
-  win.loadFile('index.html')
-}
   const win = new BrowserWindow({
     width: 800,
     height: 600,
