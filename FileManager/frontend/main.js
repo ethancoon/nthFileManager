@@ -2,10 +2,8 @@ const { app, BrowserWindow } = require('electron/main')
 const path = require('node:path')
 const addon = require('./build/Release/addon');
 
-console.log(addon.hello()); // 'world'
-// const folderPath = path.join(__dirname, 'files');
-// const files = addon.fetchFilesystemData(folderPath);
-// console.log(files);
+const files = addon.listFiles('/');
+console.log(files);
 
 
 const createWindow = () => {

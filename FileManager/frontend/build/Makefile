@@ -339,7 +339,7 @@ endif
 
 quiet_cmd_regen_makefile = ACTION Regenerating $@
 cmd_regen_makefile = cd $(srcdir); /home/ethan/.nvm/versions/node/v18.17.1/lib/node_modules/node-gyp/gyp/gyp_main.py -fmake --ignore-environment "-Dlibrary=shared_library" "-Dvisibility=default" "-Dnode_root_dir=/home/ethan/.cache/node-gyp/18.17.1" "-Dnode_gyp_dir=/home/ethan/.nvm/versions/node/v18.17.1/lib/node_modules/node-gyp" "-Dnode_lib_file=/home/ethan/.cache/node-gyp/18.17.1/<(target_arch)/node.lib" "-Dmodule_root_dir=/home/ethan/repos/nthFileManager/FileManager/frontend" "-Dnode_engine=v8" "--depth=." "-Goutput_dir=." "--generator-output=build" -I/home/ethan/repos/nthFileManager/FileManager/frontend/build/config.gypi -I/home/ethan/.nvm/versions/node/v18.17.1/lib/node_modules/node-gyp/addon.gypi -I/home/ethan/.cache/node-gyp/18.17.1/include/node/common.gypi "--toplevel-dir=." binding.gyp
-Makefile: $(srcdir)/binding.gyp $(srcdir)/build/config.gypi $(srcdir)/../../../../.cache/node-gyp/18.17.1/include/node/common.gypi $(srcdir)/../../../../.nvm/versions/node/v18.17.1/lib/node_modules/node-gyp/addon.gypi
+Makefile: $(srcdir)/binding.gyp $(srcdir)/../../../../.cache/node-gyp/18.17.1/include/node/common.gypi $(srcdir)/build/config.gypi $(srcdir)/../../../../.nvm/versions/node/v18.17.1/lib/node_modules/node-gyp/addon.gypi
 	$(call do_cmd,regen_makefile)
 
 # "all" is a concatenation of the "all" targets from all the included
