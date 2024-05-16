@@ -1,2 +1,7 @@
-const information = document.getElementById('info')
-information.innerText = `This app is using Chrome (v${window.versions.chrome()}), Node.js (v${window.versions.node()}), and Electron (v${window.versions.electron()})`
+const btn = document.getElementById('btn')
+const filePathElement = document.getElementById('filePath')
+
+btn.addEventListener('click', async () => {
+  const files = await window.electronAPI.listFiles()
+  filePathElement.innerText = files
+})

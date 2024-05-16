@@ -1,35 +1,38 @@
-const { app, BrowserWindow } = require('electron/main')
+const { app, BrowserWindow, ipcMain, dialog } = require('electron/main')
 const path = require('node:path')
-const addon = require('./build/Release/addon');
 
-const files = addon.listFiles('/');
-console.log(files);
+async function handleFileOpen () {
+  const { canceled, filePaths } = await dialog.showOpenDialog()
+  if (!canceled) {
+    return filePaths[0]
+  }
+}
+
+const fs = require('fs');
+
+// Function to retrieve list of files in a directory
+function getFilesInDirectory() {
+    return fs.readdirSync("/");
+}
 
 
-const createWindow = () => {
-  const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+function createWindow () {
+  const mainWindow = new BrowserWindow({
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
     }
   })
-
-  win.loadFile('index.html')
+  mainWindow.loadFile('index.html')
 }
 
 app.whenReady().then(() => {
+  ipcMain.handle('listFiles', getFilesInDirectory)
   createWindow()
-
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
-    }
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
+app.on('window-all-closed', function () {
+  if (process.platform !== 'darwin') app.quit()
 })
