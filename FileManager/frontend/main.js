@@ -1,18 +1,11 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron/main')
 const path = require('node:path')
-
-async function handleFileOpen () {
-  const { canceled, filePaths } = await dialog.showOpenDialog()
-  if (!canceled) {
-    return filePaths[0]
-  }
-}
-
+const addon = require('./build/Release/addon');
 const fs = require('fs');
 
 // Function to retrieve list of files in a directory
-function getFilesInDirectory() {
-    return fs.readdirSync("/");
+function getFilesInDirectory(dirPath = "/") {
+    return fs.readdirSync(dirPath);
 }
 
 
@@ -26,7 +19,9 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
-  ipcMain.handle('listFiles', getFilesInDirectory)
+  ipcMain.handle('listFiles', (event, directory) => {
+    return getFilesInDirectory(directory);
+  });
   createWindow()
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()

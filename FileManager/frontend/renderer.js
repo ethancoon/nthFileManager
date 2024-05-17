@@ -1,7 +1,11 @@
 const btn = document.getElementById('btn')
-const filePathElement = document.getElementById('filePath')
+const fileListElement = document.getElementById('fileList')
 
-btn.addEventListener('click', async () => {
-  const files = await window.electronAPI.listFiles()
-  filePathElement.innerText = files
-})
+window.addEventListener('DOMContentLoaded', async () => {
+  const files = await window.electronAPI.listFiles();
+  files.forEach(file => {
+    const li = document.createElement('li');
+    li.textContent = file;
+    fileListElement.appendChild(li);
+  });
+});
