@@ -12,3 +12,12 @@ btn.addEventListener('click', async () => {
     fileListElement.appendChild(li);
   });
 });
+
+window.addEventListener('DOMContentLoaded', async () => {
+  const rootDirectoryFiles = await window.electronAPI.listFiles('/');
+  rootDirectoryFiles.forEach(file => {
+    const li = document.createElement('li');
+    li.textContent = file;
+    fileListElement.appendChild(li);
+  });
+});

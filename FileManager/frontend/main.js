@@ -5,7 +5,7 @@ const fs = require('fs');
 
 // Function to retrieve list of files in a directory
 function getFilesInDirectory(dirPath = "/") {
-    return fs.readdirSync(dirPath);
+    return fs.readdirSync("/" + dirPath);
 }
 
 
